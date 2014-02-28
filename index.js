@@ -10,7 +10,9 @@ module.exports = function(element, filter) {
 
   filter = filter || defaultFilter;
 
-  var locals = {};
+  var locals = {
+    closeScript: 'script'
+  };
 
   each(bindings, function(key, selector) {
     var textarea = document.getElementById(selector);
