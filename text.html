@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="build/build.js"></script>
+  </head>
+  <body>
+
+    <textarea id="content-1">starting content</textarea>
+    <input id="content-2" value="input 2">
+    <div id="content-3" contenteditable>This is some text</div>
+
+    <script id="template" data-codedoc='{"first": "content-1", "second": "content-2", "third": "content-3"}' type="application/x-minstache">
+      <p>
+        <h1>First</h1>
+        {{!first}}
+        <h1>Second</h1>
+        {{!second}}
+        {{!third}}
+      </p>
+    </script>
+
+    <script>
+      var codedoc = require('codedoc');
+      codedoc(document.getElementById('template'));
+    </script>
+  </body>
+</html>

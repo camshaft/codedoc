@@ -1,0 +1,17 @@
+{
+  "name": "codedoc",
+  "repo": "camshaft/codedoc",
+  "description": "output renderer for codemirror",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {
+    "visionmedia/minstache": "*",
+    "component/each": "*"
+  },
+  "development": {},
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": [
+    "index.js"
+  ]
+}
