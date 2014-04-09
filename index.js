@@ -15,9 +15,16 @@ module.exports = function(element, filter, watch) {
     closeScript: 'script'
   };
 
+  var renderer = minstache.compile(element.text);
+  var iframe = document.createElement('iframe');
+  iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+  iframe.className = element.className;
+  element.parentNode.replaceChild(iframe, element);
+
   each(bindings, function(key, selector) {
     watch(selector, onchange);
 
+    locals[key] = '';
     function onchange(value) {
       if (value === false) return;
       filter(value, key, function(err, content) {
@@ -28,13 +35,6 @@ module.exports = function(element, filter, watch) {
     }
     onchange(false);
   });
-
-  var renderer = minstache.compile(element.text);
-
-  var iframe = document.createElement('iframe');
-  iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-  iframe.className = element.className;
-  element.parentNode.replaceChild(iframe, element);
 
   function render() {
     var out = renderer(locals);
