@@ -5,28 +5,28 @@
 var each = require('each');
 var minstache = require('minstache');
 
-module.exports = function(element, filter) {
+module.exports = function(element, filter, watch) {
   var bindings = JSON.parse(element.getAttribute('data-codedoc'));
 
   filter = filter || defaultFilter;
+  watch = watch || defaultWatch;
 
   var locals = {
     closeScript: 'script'
   };
 
   each(bindings, function(key, selector) {
-    var textarea = document.getElementById(selector);
-    textarea.addEventListener('keyup', onchange, false);
+    watch(selector, onchange);
 
-    function onchange(event) {
-      var value = textarea.value || textarea.innerHTML;
+    function onchange(value) {
+      if (value === false) return;
       filter(value, key, function(err, content) {
         if (err) console.error(err); // todo expose the error
         locals[key] = content;
-        if (event) render();
+        render();
       });
     }
-    onchange();
+    onchange(false);
   });
 
   var renderer = minstache.compile(element.text);
@@ -45,6 +45,13 @@ module.exports = function(element, filter) {
   }
   render();
 };
+
+function defaultWatch(selector, fn) {
+  var textarea = document.getElementById(selector);
+  textarea.addEventListener('keyup', function(event) {
+    fn(textarea.value || textarea.innerHTML);
+  }, false);
+}
 
 function defaultFilter(content, key, fn) {
   fn(null, content);
